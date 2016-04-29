@@ -11,6 +11,7 @@ TextEdit::TextEdit(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->webView->load(QUrl("qrc:/textEdit/index.html"));
+    this->setWindowTitle(tr("FontEdit"));
 }
 
 TextEdit::~TextEdit()
