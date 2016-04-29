@@ -23,6 +23,7 @@
 //gcode reader header
 #include "readgcode.h"
 #include "svgpath.h"
+#include "./picEdit/picedit.h"
 
 class robotScene;
 
@@ -42,6 +43,7 @@ public slots:
     void Slot_MouseDoubleClick(QPointF);
     void Slot_ResponseUart();
     void Slot_DrawFinish();
+    void Slot_ShowImage();
 private slots:
     void on_btnSetRobot_clicked();
     void on_robotCombo_currentTextChanged(const QString &arg1);
@@ -102,6 +104,7 @@ private:
     //PRINT
     readGcode* gcode;
     QString toSend;
+    PicEdit* imageEdit;
 
     //funcation
     void ChangeTypeIcon(QString pic);

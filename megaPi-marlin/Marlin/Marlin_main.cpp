@@ -208,7 +208,7 @@ CardReader card;
 #define RELAY  19
 Servo  catchFingure ;
 int armFigurePos = 100;
-int g_laster = 0;
+int g_laster = 100;
 unsigned char g_status = 1;
 unsigned char g_reback = 0;
 
@@ -1419,7 +1419,7 @@ void process_commands()
     {
      // if G0  change to G1
      catchFingure.write(20);
-     analogWrite(10, 50);
+     analogWrite(10, g_laster);
      g_status = 1;
     }
       if(Stopped == false) {

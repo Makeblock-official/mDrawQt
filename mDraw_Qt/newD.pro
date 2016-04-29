@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     gmodel.cpp \
     graph.cpp \
     readgcode.cpp \
-    svg2gcode.c
+    svg2gcode.c \
+    picEdit/picedit.cpp
 
 
 HEADERS  += newmdraw.h \
@@ -57,7 +58,8 @@ HEADERS  += newmdraw.h \
     svgpath.h \
     gmodel.h \
     graph.h \
-    readgcode.h
+    readgcode.h \
+    picEdit/picedit.h
 
 FORMS    += newmdraw.ui \
     carsetup.ui \
@@ -67,7 +69,8 @@ FORMS    += newmdraw.ui \
     spidersetup.ui \
     wiregui.ui \
     wiregui_xy.ui \
-    xysetup.ui
+    xysetup.ui \
+    picEdit/picedit.ui
 
 RESOURCES += \
     images.qrc

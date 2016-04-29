@@ -15,9 +15,10 @@ newmdRAW::newmdRAW(QWidget *parent) :
     bLoaded = false;
     bPrinting = false;
     isStop = true;
-    lastDir = ".";
+    lastDir = "C:\\Users\\Administrator\\Desktop";
     gcode = new readGcode();
     mySerialport = new QSerialPort();
+
     ui->setupUi(this);
     initDrawer();
     on_robotCombo_currentTextChanged("XY");
@@ -33,6 +34,7 @@ void newmdRAW::initDrawer()
     mCar = new CarSetup();
     mXY = new XYsetup();
     mEgg = new EggSetup();
+    imageEdit = new PicEdit();
 
     //    QRect rectF = ui->graphicsView->rect();
     gScene = new robotScene(0,this);
@@ -40,6 +42,7 @@ void newmdRAW::initDrawer()
     //    QObject::connect(gScene,SIGNAL(Sig_pos(QPointF)),this,SLOT(Slot_MouseDoubleClick(QPointF)));
     svgs = new svgPath();
     connect(gScene,SIGNAL(Sig_DrawFinish()),SLOT(Slot_DrawFinish()));
+    connect(imageEdit,SIGNAL(Sig_ShowImage()),this,SLOT(Slot_ShowImage()));
     ui->graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -251,6 +254,20 @@ void newmdRAW::on_robotCombo_currentTextChanged(const QString &arg1)
         //        xyRobot->setPos(cent);
     }
 }
+
+//show the image gcode in the scene
+void newmdRAW::Slot_ShowImage()
+{
+    gScene->pModel->resetData();
+    gScene->update();
+    bLoaded = false;
+    //process out.gcode
+    gScene->pModel->loadFile("out.gcode");
+    gScene->update();
+    bLoaded = true;
+    gcode->setTargetFile("out.gcode");
+
+}
 void newmdRAW::ChangeTypeIcon(QString pic)
 {
     ui->labelModel->setStyleSheet(tr("background-color: rgb(247, 247, 247);border-image: url(:/images/%1.png);").arg(pic));
@@ -278,23 +295,37 @@ void newmdRAW::Slot_DrawFinish()
 void newmdRAW::on_btnLoadPic_clicked()
 {
 
-    QString filename = QFileDialog::getOpenFileName(this,tr("打开文件"),lastDir,tr("Images  (*.svg)"));
+    QString filename = QFileDialog::getOpenFileName(this,tr("打开文件"),lastDir,tr("Images  (*.svg *.png *.jpg *.jpeg)"));
     lastDir = filename;
-    QGraphicsSvgItem* p_svg = new QGraphicsSvgItem(filename);
-    p_svg->setFlag(QGraphicsItem::ItemIsSelectable,true);
-    p_svg->setFlag(QGraphicsItem::ItemIsMovable,true);
-    //    gScene->addItem(p_svg);
+    if(QFileInfo(filename).suffix()=="svg")
+    {
+        svgs->fillPathVector(filename,true,false);
+        gScene->pModel->resetData();
+        gScene->update();
+        bLoaded = false;
+        //process out.gcode
+        gScene->pModel->loadFile("out.gcode");
+        gScene->update();
+        bLoaded = true;
+        gcode->setTargetFile("out.gcode");
 
-    svgs->fillPathVector(filename,true,false);
+    }
+    else
+    {
+        QImage image(filename);
+        if(image.format()>3)
+        {
+            imageEdit->LoadPicture(filename);
+            imageEdit->show();
+        }
+        else
+        {
+            QMessageBox::information(this,tr("Note"),tr("Can not open this image!"));
+        }
 
-    gScene->pModel->resetData();
-    gScene->update();
-    bLoaded = false;
-    //process out.gcode
-    gScene->pModel->loadFile("out.gcode");
-    gScene->update();
-    bLoaded = true;
-    gcode->setTargetFile("out.gcode");
+    }
+
+
 }
 
 //delete file
