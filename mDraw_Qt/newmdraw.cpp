@@ -35,6 +35,7 @@ void newmdRAW::initDrawer()
     mXY = new XYsetup();
     mEgg = new EggSetup();
     imageEdit = new PicEdit();
+    textEdit = new TextEdit();
 
     //    QRect rectF = ui->graphicsView->rect();
     gScene = new robotScene(0,this);
@@ -43,6 +44,8 @@ void newmdRAW::initDrawer()
     svgs = new svgPath();
     connect(gScene,SIGNAL(Sig_DrawFinish()),SLOT(Slot_DrawFinish()));
     connect(imageEdit,SIGNAL(Sig_ShowImage()),this,SLOT(Slot_ShowImage()));
+    connect(textEdit,SIGNAL(Sig_ShowImage()),this,SLOT(Slot_ShowFont()));
+
     ui->graphicsView->setViewport(new QGLWidget(QGLFormat(QGL::SampleBuffers)));
     ui->graphicsView->setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
     ui->graphicsView->setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
@@ -268,6 +271,19 @@ void newmdRAW::Slot_ShowImage()
     gcode->setTargetFile("out.gcode");
 
 }
+//show the font
+void newmdRAW::Slot_ShowFont()
+{
+    svgs->fillPathVector("out.svg",true,false);
+    gScene->pModel->resetData();
+    gScene->update();
+    bLoaded = false;
+    //process out.gcode
+    gScene->pModel->loadFile("out.gcode");
+    gScene->update();
+    bLoaded = true;
+    gcode->setTargetFile("out.gcode");
+}
 void newmdRAW::ChangeTypeIcon(QString pic)
 {
     ui->labelModel->setStyleSheet(tr("background-color: rgb(247, 247, 247);border-image: url(:/images/%1.png);").arg(pic));
@@ -441,4 +457,9 @@ void newmdRAW::on_btnSend_clicked()
 {
     QString cmd = ui->lineSend->text()+"\n";
     SendToArduino(cmd);
+}
+//open a font edit windows
+void newmdRAW::on_btnEdit_clicked()
+{
+    textEdit->show();
 }

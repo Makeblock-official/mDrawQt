@@ -24,6 +24,7 @@
 #include "readgcode.h"
 #include "svgpath.h"
 #include "./picEdit/picedit.h"
+#include "./textEdit/textedit.h"
 
 class robotScene;
 
@@ -44,6 +45,7 @@ public slots:
     void Slot_ResponseUart();
     void Slot_DrawFinish();
     void Slot_ShowImage();
+    void Slot_ShowFont();
 private slots:
     void on_btnSetRobot_clicked();
     void on_robotCombo_currentTextChanged(const QString &arg1);
@@ -70,6 +72,8 @@ private slots:
     void on_slideLaserDelay_valueChanged(int value);
 
     void on_btnSend_clicked();
+
+    void on_btnEdit_clicked();
 
 protected:
     void initDrawer();
@@ -105,6 +109,7 @@ private:
     readGcode* gcode;
     QString toSend;
     PicEdit* imageEdit;
+    TextEdit* textEdit;
 
     //funcation
     void ChangeTypeIcon(QString pic);

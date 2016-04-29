@@ -6,8 +6,9 @@
 
 QT       += core gui
 QT       += serialport
-QT      += svg
+QT       += svg
 QT       += opengl
+QT       += webkitwidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -36,7 +37,8 @@ SOURCES += main.cpp\
     graph.cpp \
     readgcode.cpp \
     svg2gcode.c \
-    picEdit/picedit.cpp
+    picEdit/picedit.cpp \
+    textEdit/textedit.cpp
 
 
 HEADERS  += newmdraw.h \
@@ -59,7 +61,8 @@ HEADERS  += newmdraw.h \
     gmodel.h \
     graph.h \
     readgcode.h \
-    picEdit/picedit.h
+    picEdit/picedit.h \
+    textEdit/textedit.h
 
 FORMS    += newmdraw.ui \
     carsetup.ui \
@@ -70,7 +73,8 @@ FORMS    += newmdraw.ui \
     wiregui.ui \
     wiregui_xy.ui \
     xysetup.ui \
-    picEdit/picedit.ui
+    picEdit/picedit.ui \
+    textEdit/textedit.ui
 
 RESOURCES += \
     images.qrc
