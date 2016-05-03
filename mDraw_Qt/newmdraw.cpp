@@ -55,6 +55,9 @@ void newmdRAW::initDrawer()
     psetting->beginGroup("laser");
     int sliderPower = psetting->value("laserPower").toInt();
     int sliderSpeed = psetting->value("laserSpeed").toInt();
+    QString g_width = psetting->value("printWidth").toString();
+    gScene->SetScale(g_width.toInt()/100.0);
+    ui->lineWidth->setText(g_width);
     ui->slideLaserPower->setValue(sliderPower);
     ui->slideLaserDelay->setValue(sliderSpeed);
     psetting->endGroup();
@@ -441,6 +444,20 @@ void newmdRAW::on_btnSaveLaser_clicked()
      QString speed = "G21\nG90\nG92\nM4 P0\n";
     svgs->setHeader(speed);
 }
+//ok btn
+void newmdRAW::on_btnOK_clicked()
+{
+    int i = ui->lineWidth->text().toInt();
+    svgs->setPrintPicWidth(i);
+
+    QSettings* psetting = new QSettings("Config.ini",QSettings::IniFormat);
+    psetting->beginGroup("laser");
+    psetting->setValue("printWidth",QVariant(i));
+    gScene->SetScale(i/100.0);
+    psetting->endGroup();
+
+
+}
 //power value change
 void newmdRAW::on_slideLaserPower_valueChanged(int value)
 {
@@ -463,3 +480,4 @@ void newmdRAW::on_btnEdit_clicked()
 {
     textEdit->show();
 }
+

@@ -44,8 +44,10 @@ static int simplify = 0;
 static struct NSVGimage* g_image = NULL;
 
 uint64_t seed;
+int g_width = 100;    //picture width
 char pon [40];
 char pheader[60];
+
 
 int32_t rand31() {
     uint64_t tmp1;
@@ -342,7 +344,10 @@ void setPrintHead(char* phead)
     int i = strlen(phead);
     strncpy(pheader,phead,i);
 }
-
+void setPrintWidth(int w)
+{
+    g_width = w;
+}
 int svgToGcode(char * file,int be) {
 
     int i,j,k,l,first;
@@ -380,7 +385,7 @@ int svgToGcode(char * file,int be) {
     }
     calcBounds(g_image);
     //  set width of the picture
-    width = 100;
+    width = g_width;
     w = fabs(bounds[0]-bounds[2]);
     scale = width/w;
 #ifdef _WIN32

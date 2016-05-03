@@ -9,12 +9,14 @@ svgPath::svgPath(QObject *parent) :
     psetting->beginGroup("laser");
    int slidervalue =  psetting->value("laserPower").toInt();
    int laserspeed =  psetting->value("laserSpeed").toInt();
+   int picWidth = psetting->value("printWidth").toInt();
     psetting->endGroup();
     QString power = "M4 P"+QString::number(slidervalue)+"\n";
    setLaster(power);
     QString speed = "G90\nG92\nM4  P0\nM220 S"+QString::number(laserspeed)+"\n";
 //    QString speed = "G90\nG92\nM4 P0\n";
     setHeader(speed);
+    setPrintPicWidth(picWidth);
 }
 
 void  svgPath::fillPathVector(QString file,bool doBez,bool exportFile)
@@ -29,7 +31,10 @@ void svgPath::setHeader(QString pheader)
 {
     setPrintHead(pheader.toLatin1().data());
 }
-
+void svgPath::setPrintPicWidth(int i)
+{
+    setPrintWidth(i);
+}
 
 //parse the gcode
 //store the gcode in the vector

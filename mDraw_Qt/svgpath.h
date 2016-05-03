@@ -20,6 +20,7 @@ public:
     void fillPathVector(QString file,bool besize,bool exportFile);
     void setLaster(QString pon);
     void setHeader(QString pheader);
+    void setPrintPicWidth(int i);
 
 signals:
 

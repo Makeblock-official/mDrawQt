@@ -51,6 +51,7 @@ void calcBounds(struct NSVGimage* image);
 void reorder(SVGPoint* pts, int* cities, int ncity);
 void setPrintLaster( char*pon);
 void setPrintHead(char *phead);
+void setPrintWidth(int i);
 int svgToGcode(char* p,int);
 #ifdef __cplusplus
 }

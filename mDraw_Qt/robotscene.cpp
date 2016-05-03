@@ -21,8 +21,11 @@ robotScene::robotScene(QObject *parent,newmdRAW* pp) :
     pDrawGcode = new QTimer();
     connect(pDrawGcode, SIGNAL(timeout()), this, SLOT(Slot_RenderChange()));
 
+    scale = 1.0;
     currentIsland = 0;
     currentLine = 0;
+    camdistTarget  = 350.0;
+    camdist = 350.0;
     bAnimate = false;
 
 }
@@ -68,6 +71,20 @@ void robotScene::drawBackground(QPainter *painter, const QRectF &rect)
     paintGL();
 
 }
+void robotScene::wheelEvent(QWheelEvent *event)
+{
+    camdistTarget -= event->delta()/8.0;
+    //zooming limits
+//    if(perspective)
+    {
+        if(camdistTarget <= 10.0)
+        {
+            camdistTarget = 10.0;
+        }
+        if(camdistTarget >= 350.00)
+            camdistTarget = 350.00;
+    }
+}
 void robotScene::initialGL()
 {
     glMatrixMode(GL_PROJECTION);
@@ -103,16 +120,21 @@ void robotScene::paintGL()
     glMatrixMode(GL_PROJECTION);
     glDisable(GL_LIGHTING);
     glLoadIdentity();//restores default matrix.
-    nearClip = 1;
+    camdist = camdist + (camdistTarget - camdist)/5.0;
+    nearClip = camdist;
     gluPerspective(30,double(width())/height(),nearClip,5500);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    //    pan = pan + (panTarget - pan)/2.0;
+
+//    glTranslatef(0.0, 0.0, -camdist);
+    pan = pan + (panTarget - pan)/2.0;
     glTranslatef(0.0, 0.0, -350);//step back amount
     glTranslatef(pan.x(),-pan.y(),0);
 
     glRotatef(180, 1.0, 0.0, 0.0);
+    glScalef(scale,scale,1.0);
+
     //    glRotatef(180, 0.0, 0.0, 1.0);
     if(bAnimate)
     {

@@ -75,6 +75,8 @@ private slots:
 
     void on_btnEdit_clicked();
 
+    void on_btnOK_clicked();
+
 protected:
     void initDrawer();
 private:

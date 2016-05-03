@@ -21,6 +21,7 @@
 #include <QDebug>
 #include <QVector2D>
 #include <QTimer>
+#include <QWheelEvent>
 #include "newmdraw.h"
 #include "gmodel.h"
 
@@ -42,12 +43,13 @@ public:
     void StartDraw();
     void StopDraw();
     void CancleDraw();
+    void SetScale(double i){scale = i;}
 protected:
 //    void mousePressEvent(QGraphicsSceneMouseEvent *event);
 //    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 //    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
-
+    void wheelEvent(QWheelEvent *event);
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 public slots:
@@ -74,8 +76,9 @@ private:
     //anitmate
     int currentIsland;
     int currentLine;
-
-
+    double camdistTarget;
+    double camdist;
+    double scale;
 
     newmdRAW* pMain;
 
